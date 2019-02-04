@@ -4,6 +4,9 @@
 #include <ctime>
 #include <cmath>
 #include <cstdlib>
+#include <boost/timer/timer.hpp>
+#include <sys/time.h>
+#include <fstream>
 
 # define PI 3.14159265358979323846 
 
@@ -30,9 +33,6 @@ int dboard(int N, int rank, int p){
 }
 
 int main(int argc, char *argv[]){
-    //Start timing program
-    float tic = time(NULL);
-
     // Initialize MPI 
 	MPI_Init(&argc, &argv);
 	MPI_Comm comm = MPI_COMM_WORLD;
@@ -42,11 +42,17 @@ int main(int argc, char *argv[]){
 
     // Get passed values for N, R
     int N = 0;
-    if (rank==0) N = *argv[-2];
-    int R = *argv[-1];
 
+    if (rank==0) N = strtol(argv[1], NULL, 10);
+    int R = strtol(argv[2], NULL, 10);
     // Broadcast N from master processor
     MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
+
+    //Start timing program
+    struct timespec start, end;
+    clock_gettime(CLOCK_MONOTONIC, &start);
+
+    // Throw darts
     int Ms[R];
     for (int j=0; j<R; j++){
         // Seed random number generator
@@ -54,22 +60,30 @@ int main(int argc, char *argv[]){
         int m = dboard(N, rank, p);
         MPI_Reduce(&m, &Ms[j], 1, MPI_INT, MPI_SUM, 0, MPI_COMM_WORLD);
     }
-
     // Compute and average pi
     double pi_approx = 0;
     if (rank==0){
         for (int j=0; j<R; j++){
-             pi_approx += (1.0 * Ms[j])/(1.0 * N);
+             pi_approx += (2.0 * N)/(1.0 * Ms[j]);
         }
         pi_approx /= (1.0*R);
         std::cout << pi_approx << std::endl;
     }
-	MPI_Finalize();
+	
 
-    // Print total compute time
-    float toc = time(NULL);
-    float seconds = difftime(toc, tic);
-    std::cout << "Total Computation time: " << seconds << " Seconds" << std::endl;
+    // // Print total compute time
+    clock_gettime(CLOCK_MONOTONIC, &end); 
+    double duration; 
+    duration = (end.tv_sec - start.tv_sec) * 1e9; 
+    duration = (duration + (end.tv_nsec - start.tv_nsec)) * 1e-9;
+    std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
 
+    // Write results to file
+    std::ofstream outfile;
+    outfile.open ("output.txt", std::ios_base::app);
+    outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << pi_approx << "\nTime = " << duration;
+
+    // Wrap up
+    MPI_Finalize();
 	return 0;
 }
