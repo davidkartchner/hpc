@@ -67,20 +67,21 @@ int main(int argc, char *argv[]){
         }
         pi_approx /= (1.0*R);
         std::cout << pi_approx << std::endl;
+        // // Print total compute time
+        clock_gettime(CLOCK_MONOTONIC, &end); 
+        double duration; 
+        duration = (end.tv_sec - start.tv_sec) * 1e9; 
+        duration = (duration + (end.tv_nsec - start.tv_nsec)) * 1e-9;
+        std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
+
+        // Write results to file
+        std::ofstream outfile;
+        outfile.open ("output.txt", std::ios_base::app);
+        outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << pi_approx << "\nTime = " << duration <<"\n";
     }
 	
 
-    // // Print total compute time
-    clock_gettime(CLOCK_MONOTONIC, &end); 
-    double duration; 
-    duration = (end.tv_sec - start.tv_sec) * 1e9; 
-    duration = (duration + (end.tv_nsec - start.tv_nsec)) * 1e-9;
-    std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
-
-    // Write results to file
-    std::ofstream outfile;
-    outfile.open ("output.txt", std::ios_base::app);
-    outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << pi_approx << "\nTime = " << duration;
+    
 
     // Wrap up
     MPI_Finalize();
