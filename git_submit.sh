@@ -1,3 +1,3 @@
-git add *
-git commit -m"generic commit"
+git add *.cpp
+git commit -m "$1"
 git push
