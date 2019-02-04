@@ -4,7 +4,6 @@
 #include <ctime>
 #include <cmath>
 #include <cstdlib>
-#include <boost/timer/timer.hpp>
 #include <sys/time.h>
 #include <fstream>
 
