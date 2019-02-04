@@ -31,7 +31,7 @@ int dboard(int N, int rank, int p){
 
 int main(int argc, char *argv[]){
     //Start timing program
-    //float tic = time(NULL);
+    float tic = time(NULL);
 
     // Initialize MPI 
 	MPI_Init(&argc, &argv);
@@ -42,8 +42,8 @@ int main(int argc, char *argv[]){
 
     // Get passed values for N, R
     int N = 0;
-    if (rank==0) N = *argv[2];
-    int R = *argv[3];
+    if (rank==0) N = *argv[-2];
+    int R = *argv[-1];
 
     // Broadcast N from master processor
     MPI_Bcast(&N, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -67,9 +67,9 @@ int main(int argc, char *argv[]){
 	MPI_Finalize();
 
     // Print total compute time
-    // float toc = time(NULL);
-    // float seconds = difftime(toc, tic);
-    // std::cout << "Total Computation time: " << seconds << " Seconds" << std::endl;
+    float toc = time(NULL);
+    float seconds = difftime(toc, tic);
+    std::cout << "Total Computation time: " << seconds << " Seconds" << std::endl;
 
 	return 0;
 }
