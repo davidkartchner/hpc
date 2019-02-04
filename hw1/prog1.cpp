@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <sys/time.h>
 #include <fstream>
+#include <iomanip>
+#include <limits>
 
 # define PI 3.14159265358979323846 
 
@@ -77,7 +79,7 @@ int main(int argc, char *argv[]){
         // Write results to file
         std::ofstream outfile;
         outfile.open ("output.txt", std::ios_base::app);
-        outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << pi_approx << "\nTime = " << duration <<"\n";
+        outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << std::setprecision(9) << pi_approx << "\nTime = " << duration <<"\n";
     }
 	
 
