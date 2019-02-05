@@ -76,10 +76,10 @@ int main(int argc, char *argv[]){
         duration = (duration + (end.tv_nsec - start.tv_nsec)) * 1e-9;
         // std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
 
-        // // Write results to file
-        // std::ofstream outfile;
-        // outfile.open ("output.txt", std::ios_base::app);
-        // outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << std::setprecision(9) << pi_approx << "\nTime = " << duration <<"\n";
+        // Write results to file
+        std::ofstream outfile;
+        outfile.open ("output.txt", std::ios_base::app);
+        outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << std::setprecision(9) << pi_approx << "\nTime = " << duration <<"\n";
     }
 	
     // Wrap up
