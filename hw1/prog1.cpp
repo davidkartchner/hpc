@@ -74,17 +74,14 @@ int main(int argc, char *argv[]){
         double duration; 
         duration = (end.tv_sec - start.tv_sec) * 1e9; 
         duration = (duration + (end.tv_nsec - start.tv_nsec)) * 1e-9;
-        std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
+        // std::cout << "Total Computation time: " << duration  << " Seconds" << std::endl;
 
-        // Write results to file
-        std::ofstream outfile;
-        outfile.open ("output.txt", std::ios_base::app);
-        outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << std::setprecision(9) << pi_approx << "\nTime = " << duration <<"\n";
+        // // Write results to file
+        // std::ofstream outfile;
+        // outfile.open ("output.txt", std::ios_base::app);
+        // outfile << "N = " << N <<", R = " << R << ", P = " << p << ", PI = " << std::setprecision(9) << pi_approx << "\nTime = " << duration <<"\n";
     }
 	
-
-    
-
     // Wrap up
     MPI_Finalize();
 	return 0;
